@@ -1,0 +1,27 @@
+name: Main
+
+on: push
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Build for ARM64
+        run: |
+          xcodebuild -project mac-brightnessctl.xcodeproj -scheme mac-brightnessctl -configuration Release -sdk macosx -arch arm64 clean build SYMROOT=.
+          tar -czvf mac-brightnessctl.darwin-arm64.tar.gz -C Release/ mac-brightnessctl
+      - name: Build for Intel
+        run: |
+          xcodebuild -project mac-brightnessctl.xcodeproj -scheme mac-brightnessctl -configuration Release -sdk macosx -arch x86_64 clean build SYMROOT=.
+          tar -czvf mac-brightnessctl.amd64.tar.gz -C Release/ mac-brightnessctl
+    
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            mac-brightnessctl.amd64.tar.gz
+            mac-brightnessctl.darwin-arm64.tar.gz
