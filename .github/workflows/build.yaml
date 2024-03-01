@@ -9,19 +9,23 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         
-      - name: Build for ARM64
+      - name: Build
         run: |
-          xcodebuild -project mac-brightnessctl.xcodeproj -scheme mac-brightnessctl -configuration Release -sdk macosx -arch arm64 clean build SYMROOT=.
-          tar -czvf mac-brightnessctl.darwin-arm64.tar.gz -C Release/ mac-brightnessctl
-      - name: Build for Intel
-        run: |
-          xcodebuild -project mac-brightnessctl.xcodeproj -scheme mac-brightnessctl -configuration Release -sdk macosx -arch x86_64 clean build SYMROOT=.
-          tar -czvf mac-brightnessctl.amd64.tar.gz -C Release/ mac-brightnessctl
-    
+          CC = clang
+          CFLAGS = -Wall -Wextra -O2
+          LDFLAGS = -framework Foundation
+
+          SRC = main.m BrightnessControl.m KeyboardManager.m
+          OUT = mac-brightnessctl
+
+          all: $(OUT)
+
+          $(OUT): $(SRC)
+          $(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
+
+          clean:
+          rm -f $(OUT)
+          
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
-        with:
-          files: |
-            mac-brightnessctl.amd64.tar.gz
-            mac-brightnessctl.darwin-arm64.tar.gz
