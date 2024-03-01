@@ -15,6 +15,11 @@ mac-brightnessctl -s 1           Suspend idle dimming
 mac-brightnessctl -t             Get current state of idle dim time
 mac-brightnessctl -t 5           Set idle dim time to 5 seconds
 ```
+## Installation
+```bash
+brew tap rakalex/tap
+brew install mac-brightnessctl
+```
 
 ## Inspiration
 
