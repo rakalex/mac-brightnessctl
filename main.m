@@ -58,7 +58,8 @@ void printUsage(void) {
     printf("  -a        Enable or disable auto-brightness. Use '1' or '0'.\n");
     printf("  -s        Suspend or resume idle dimming. Use '1' or '0'.\n");
     printf("  -t        Set the idle dim time in seconds.\n");
-    printf("  -f        Flash the keyboard lights [n] times with interval [t] seconds. Handy for creating visual alerts, notifications, or attention-grabbing effects.\n\n");
+    printf("  -f        Flash the keyboard lights [n] times with interval [t] seconds and optional fade speed [s].\n"
+           "            Useful for creating visual alerts, notifications, or attention-grabbing effects. If [s] is not provided, the default fade speed is 500 milliseconds.\n\n");
 
     printf("Examples:\n");
     printf("  mac-brightnessctl 0.75           Set brightness to 75%%\n");
@@ -69,7 +70,7 @@ void printUsage(void) {
     printf("  mac-brightnessctl -s 1           Suspend idle dimming\n");
     printf("  mac-brightnessctl -t             Get current state of idle dim time\n");
     printf("  mac-brightnessctl -t 5           Set idle dim time to 5 seconds\n");
-    printf("  mac-brightnessctl -f 5 0.5       Flashing 5 times with interval 0.5 seconds\n");
+    printf("  mac-brightnessctl -f 5 0.5 [s]   Flash the keyboard lights 5 times with an interval of 0.5 seconds and optional fade speed [s]. If [s] is not provided, the default fade speed is 500 milliseconds.\n");
 }
 
 void handleAutoBrightness(int argc, const char *argv[]) {
@@ -144,18 +145,23 @@ void handleSetBrightness(int argc, const char *argv[]) {
 }
 
 void handleFlashKeyboardLights(int argc, const char *argv[]) {
-    if (argc == 4) {
-        int flashTimes = atoi(argv[2]);
-        double flashInterval = atof(argv[3]);
+    int flashTimes, fadeSpeed = 500; // Default fade speed
+    double flashInterval;
 
-        if (flashTimes > 0 && flashInterval > 0) {
-            [BrightnessControl flashKeyboardLights:flashTimes withInterval:flashInterval];
-        } else {
-            printf("Error: Invalid input for flashing keyboard lights. Ensure both values are positive.\n");
-            printUsage();
+    if (argc == 4 || argc == 5) {
+        flashTimes = atoi(argv[2]);
+        flashInterval = atof(argv[3]);
+
+        if (argc == 5) {
+            fadeSpeed = atof(argv[4]);
         }
-    } else {
-        printf("Error: Invalid number of arguments for flashing keyboard lights\n");
-        printUsage();
+
+        if (flashTimes > 0 && flashInterval > 0 && fadeSpeed >= 0) {
+            [BrightnessControl flashKeyboardLights:flashTimes withInterval:flashInterval andFadeSpeed:fadeSpeed];
+            return;
+        }
     }
+
+    printf("Error: Invalid arguments for flashing keyboard lights\n");
+    printUsage();
 }

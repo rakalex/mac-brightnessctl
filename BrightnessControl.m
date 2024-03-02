@@ -35,15 +35,16 @@
     [KeyboardManager.brightnessClient enableAutoBrightness:value forKeyboard:1];
 }
 
-+ (void)flashKeyboardLights:(int)times withInterval:(double)interval {
++ (void)flashKeyboardLights:(int)times withInterval:(double)interval andFadeSpeed:(double)fadeSpeed {
     float current = [self getBrightness];
     for (int i = 0; i < times; i++) {
-        [self setBrightness:0];
+        [KeyboardManager.brightnessClient setBrightness:0 fadeSpeed:fadeSpeed commit:true forKeyboard:1];
         [NSThread sleepForTimeInterval:interval];
-        [self setBrightness:1];
+        [KeyboardManager.brightnessClient setBrightness:1 fadeSpeed:fadeSpeed commit:true forKeyboard:1];
         [NSThread sleepForTimeInterval:interval];
     }
     [self setBrightness:current];
 }
+
 
 @end
