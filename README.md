@@ -14,8 +14,9 @@ mac-brightnessctl -s             Get current state of suspend idle dimming
 mac-brightnessctl -s 1           Suspend idle dimming
 mac-brightnessctl -t             Get current state of idle dim time
 mac-brightnessctl -t 5           Set idle dim time to 5 seconds
-mac-brightnessctl -f 5 0.5       Flash the keyboard lights [n] times with interval [t] seconds.
-                                 Handy for creating visual alerts, notifications, or attention-grabbing effects.
+mac-brightnessctl -f 5 0.5       Flash the keyboard lights 5 times with an interval of 0.5 seconds and optional fade speed [s].
+                                 If [s] is not provided, the default fade speed is 500 milliseconds.
+                                 
 ```
 ## Installation
 ```bash
