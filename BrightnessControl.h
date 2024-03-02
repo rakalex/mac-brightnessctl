@@ -10,5 +10,6 @@
 + (void)setIdleDimTime:(double)value;
 + (double)idleDimTimeForKeyboard;
 + (void)enableAutoBrightness:(bool)value;
++ (void)flashKeyboardLights:(int)times withInterval:(double)interval;
 
 @end

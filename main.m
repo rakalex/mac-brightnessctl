@@ -11,6 +11,7 @@ void handleAutoBrightness(int argc, const char *argv[]);
 void handleSuspendIdleDimming(int argc, const char *argv[]);
 void handleIdleDimTime(int argc, const char *argv[]);
 void handleSetBrightness(int argc, const char *argv[]);
+void handleFlashKeyboardLights(int argc, const char *argv[]);
 
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
@@ -26,6 +27,9 @@ int main(int argc, const char * argv[]) {
                     break;
                 case 'a':
                     handleAutoBrightness(argc, argv);
+                    break;
+                case 'f':
+                    handleFlashKeyboardLights(argc, argv);
                     break;
                 case 's':
                     handleSuspendIdleDimming(argc, argv);
@@ -53,7 +57,8 @@ void printUsage(void) {
     printf("            If no argument is given, display the current brightness.\n");
     printf("  -a        Enable or disable auto-brightness. Use '1' or '0'.\n");
     printf("  -s        Suspend or resume idle dimming. Use '1' or '0'.\n");
-    printf("  -t        Set the idle dim time in seconds.\n\n");
+    printf("  -t        Set the idle dim time in seconds.\n");
+    printf("  -f        Flash the keyboard lights [n] times with interval [t] seconds. Handy for creating visual alerts, notifications, or attention-grabbing effects.\n\n");
 
     printf("Examples:\n");
     printf("  mac-brightnessctl 0.75           Set brightness to 75%%\n");
@@ -64,6 +69,7 @@ void printUsage(void) {
     printf("  mac-brightnessctl -s 1           Suspend idle dimming\n");
     printf("  mac-brightnessctl -t             Get current state of idle dim time\n");
     printf("  mac-brightnessctl -t 5           Set idle dim time to 5 seconds\n");
+    printf("  mac-brightnessctl -f 5 0.5       Flashing 5 times with interval 0.5 seconds\n");
 }
 
 void handleAutoBrightness(int argc, const char *argv[]) {
@@ -133,6 +139,23 @@ void handleSetBrightness(int argc, const char *argv[]) {
         }
     } else {
         printf("Error: Invalid number of arguments\n");
+        printUsage();
+    }
+}
+
+void handleFlashKeyboardLights(int argc, const char *argv[]) {
+    if (argc == 4) {
+        int flashTimes = atoi(argv[2]);
+        double flashInterval = atof(argv[3]);
+
+        if (flashTimes > 0 && flashInterval > 0) {
+            [BrightnessControl flashKeyboardLights:flashTimes withInterval:flashInterval];
+        } else {
+            printf("Error: Invalid input for flashing keyboard lights. Ensure both values are positive.\n");
+            printUsage();
+        }
+    } else {
+        printf("Error: Invalid number of arguments for flashing keyboard lights\n");
         printUsage();
     }
 }
