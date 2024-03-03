@@ -16,8 +16,13 @@ mac-brightnessctl -t             Get current state of idle dim time
 mac-brightnessctl -t 5           Set idle dim time to 5 seconds
 mac-brightnessctl -f 5 0.5 [s]   Flash the keyboard lights 5 times with an interval of 0.5 seconds and optional fade speed [s].
                                  If [s] is not provided, the default fade speed is 500 milliseconds.
-                                 
 ```
+Visual alerts example
+```bash
+ping google.com -c 3 && mac-brightnessctl -f 5 0.5 100 So, when the ping command is completed successfully, the lights will flash five times with the specified brightness settings.
+```
+
+
 ## Installation
 ```bash
 brew tap rakalex/mac-brightnessctl
