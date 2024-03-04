@@ -19,7 +19,7 @@ mac-brightnessctl -f 5 0.5 [s]   Flash the keyboard lights 5 times with an inter
 ```
 Visual alerts example
 ```bash
-ping google.com -c 3 && mac-brightnessctl -f 5 0.5 100 So, when the ping command is completed successfully, the lights will flash five times with the specified brightness settings.
+ping google.com -c 3 && mac-brightnessctl -f 5 0.5 100 #So, when the ping command is completed successfully, the lights will flash five times with the specified brightness settings.
 ```
 
 
