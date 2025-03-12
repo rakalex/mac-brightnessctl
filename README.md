@@ -24,9 +24,44 @@ ping google.com -c 3 && mac-brightnessctl -f 5 0.5 100 #So, when the ping comman
 
 
 ## Installation
+
+If you use [Homebrew](https://brew.sh):
+
 ```bash
 brew tap rakalex/mac-brightnessctl
 brew install mac-brightnessctl
+```
+
+Or if you use [MacPorts](https://www.macports.org):
+
+```bash
+sudo port install mac-brightnessctl
+```
+
+Or install manually from source:
+
+```bash
+# Set the version of mac-brightnessctl you want to install
+# See https://github.com/rakalex/mac-brightnessctl/releases for the latest version
+VERSION=0.2.1
+
+# Download source code and enter directory
+curl -L https://github.com/rakalex/mac-brightnessctl/archive/refs/tags/${VERSION}.tar.gz | tar xz
+cd mac-brightnessctl-${VERSION}
+
+# Make sure the Command Line Tools (which provide the Clang compiler) are installed
+clang --version || xcode-select -–install
+
+# Compile binary
+make
+
+# Put the binary in a directory in your $PATH, e.g. /usr/local/bin/
+sudo cp mac-brightnessctl /usr/local/bin/
+
+# Clean up after yourself
+cd .. 
+rm -rf mac-brightnessctl-${VERSION}
+unset VERSION
 ```
 
 ## Inspiration
